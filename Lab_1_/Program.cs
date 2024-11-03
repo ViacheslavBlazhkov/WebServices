@@ -1,3 +1,5 @@
+using Serilog;
+
 namespace Lab_1_
 {
     public class Program
@@ -5,6 +7,9 @@ namespace Lab_1_
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            Log.Logger = new LoggerConfiguration().WriteTo.File("Logs/myapp-.log", rollingInterval: RollingInterval.Day).CreateLogger();
+            builder.Host.UseSerilog();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
