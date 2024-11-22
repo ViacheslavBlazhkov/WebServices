@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Localization;
 using Serilog;
 
 namespace Lab_1_
@@ -8,12 +9,20 @@ namespace Lab_1_
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            Log.Logger = new LoggerConfiguration().WriteTo.File("Logs/myapp-.log", rollingInterval: RollingInterval.Day).CreateLogger();
+            Log.Logger = new LoggerConfiguration().WriteTo.File("Logs/myapp-.log", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
             builder.Host.UseSerilog();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddLocalization();
+            builder.Services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[] { "en", "uk" };
+                options.SetDefaultCulture("en")
+                    .AddSupportedCultures(supportedCultures)
+                    .AddSupportedUICultures(supportedCultures);
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -28,6 +37,7 @@ namespace Lab_1_
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseRequestLocalization();
 
             app.UseAuthorization();
 

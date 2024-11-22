@@ -1,0 +1,15 @@
+﻿@using System.Globalization
+@{
+    var currentCulture = CultureInfo.CurrentCulture.Name; // Поточна культура
+}
+
+<div class="language-switch">
+    <form method="post" action="@Url.Action("ChangeLanguage", "Home")">
+        <select name="culture" onchange="this.form.submit()">
+            <!option value="en" @((currentCulture == "en") ? "selected" : "")>English</!option>
+            <!option value="uk" @((currentCulture == "uk") ? "selected" : "")>Українська</!option>
+        </select>
+    </form>
+</div>
+
+
